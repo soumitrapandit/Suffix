@@ -1,5 +1,35 @@
 import torch
 
+
+class Sequential:
+
+    def __init__(self,layers):
+        # So we're basically going to initialize a sequential model
+        # And every layer would be a funtion
+        # When we call the model, it will take in x
+        # And it should just return whatever the last function in the sequence returns
+        # This is the magic of classes in action
+
+        self.layers = layers
+        self.parameters = []
+
+    def __call__(self,x):
+        #
+        for layer in self.layers:
+            x = layer(x)
+            
+        
+        self.out = x
+        return self.out
+    
+    def parameters(self):
+        #
+        for layer in self.layers:
+            self.parameters += layer.parameters()
+        
+        return self.parameters
+        
+
 class Linear:
     
     def __init__(self, dim_in, dim_out, bias = True):
@@ -75,11 +105,24 @@ class Embedding:
 class Flatten:
 
     def __call__(self,x):
-        self.out = x.view(x.shpae[0],-1)
+        self.out = x.view(x.shape[0],-1)
         return self.out
     
     def parameters(self):
         return []
+
+
+class FlattenConsecutive:
+
+    def __init__(self, n):
+        self.n = n
+
+    def __call__(self,x):
+        B,T,C = x.shape
+        self.out = x.view(B,T//self.n,C*self.n)
+        if self.out.shape[1] == 1:
+            self.out.squeeze(1)
+        return self.out
 
 
 class ReLU:
