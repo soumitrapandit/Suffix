@@ -58,6 +58,30 @@ class BatchNorm1d:
     def parameters(self):
         return [self.gamma, self.beta]
 
+
+class Embedding:
+
+    def __init__(self,num_embeddings,embedding_dim):
+        self.weight = torch.randn(num_embeddings,embedding_dim)
+    
+    def __call__(self,IX):
+        self.out = self.weight[IX]
+        return self.out
+
+    def parameters(self):
+        return [self.weight]
+
+
+class Flatten:
+
+    def __call__(self,x):
+        self.out = x.view(x.shpae[0],-1)
+        return self.out
+    
+    def parameters(self):
+        return []
+
+
 class ReLU:
 
     def __call__(self,x):
@@ -67,6 +91,7 @@ class ReLU:
     def parameters(self):
         return []
 
+
 class Tanh:
 
     def __call__(self,x):
@@ -75,5 +100,3 @@ class Tanh:
     
     def parameters(self):
         return []
-
-
