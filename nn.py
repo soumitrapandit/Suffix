@@ -42,7 +42,7 @@ class Linear:
         return self.out
 
     def parameters(self):
-        return [self.weight] + ([self.bias] if self.bias else [])
+        return [self.weight] + ([] if self.bias is None else [self.bias])
 
 
 class BatchNorm1d:
