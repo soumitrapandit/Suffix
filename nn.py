@@ -11,7 +11,6 @@ class Sequential:
         # This is the magic of classes in action
 
         self.layers = layers
-        self.parameters = []
 
     def __call__(self,x):
         #
@@ -24,10 +23,11 @@ class Sequential:
     
     def parameters(self):
         #
+        param_list = []
         for layer in self.layers:
-            self.parameters += layer.parameters()
+            param_list += layer.parameters()
         
-        return self.parameters
+        return param_list
         
 
 class Linear:
@@ -124,6 +124,8 @@ class FlattenConsecutive:
             self.out.squeeze(1)
         return self.out
 
+    def parameters(self):
+        return []
 
 class ReLU:
 
